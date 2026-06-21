@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>jrnl</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ── ONBOARDING ─────────────────────────────────────────── -->
+  <div id="onboarding-screen">
+    <div class="onb-wrap">
+      <div class="onb-logo">JRNL</div>
+      <div class="onb-progress">
+        <div class="onb-prog done" id="p0"></div>
+        <div class="onb-prog" id="p1"></div>
+        <div class="onb-prog" id="p2"></div>
+        <div class="onb-prog" id="p3"></div>
+        <div class="onb-prog" id="p4"></div>
+      </div>
+      <div class="onb-step active" id="ob0">
+        <div class="onb-q">일기를 쓰고 싶은<br>이유가 무엇인가요?</div>
+        <div class="chips" id="ch0">
+          <div class="chip onb-chip" data-v="habit">습관 추적</div>
+          <div class="chip onb-chip" data-v="emotion">감정 정리</div>
+          <div class="chip onb-chip" data-v="goal">목표 관리</div>
+          <div class="chip onb-chip" data-v="daily">하루 기록</div>
+          <div class="chip onb-chip" data-v="growth">자기계발</div>
+          <div class="chip onb-chip" data-v="memory">추억 보관</div>
+          <div class="chip onb-chip" data-v="retro">회고 &amp; 반성</div>
+        </div>
+      </div>
+      <div class="onb-step" id="ob1">
+        <div class="onb-q">어떤 방식으로 기록하는 것을 선호하나요?</div>
+        <div class="chips" id="ch1">
+          <div class="chip onb-chip" data-v="free">자유롭게 글 쓰기</div>
+          <div class="chip onb-chip" data-v="question">질문에 답하기</div>
+          <div class="chip onb-chip" data-v="check">짧게 체크하기</div>
+          <div class="chip onb-chip" data-v="number">숫자로 기록하기</div>
+        </div>
+      </div>
+      <div class="onb-step" id="ob2">
+        <div class="onb-q">AI가 어떤 방식으로 함께하면 좋을까요?</div>
+        <div class="chips" id="ch2">
+          <div class="chip onb-chip" data-v="pattern">패턴을 발견해주기</div>
+          <div class="chip onb-chip" data-v="question">생각해볼 질문 던지기</div>
+          <div class="chip onb-chip" data-v="coach">목표를 점검해주기</div>
+          <div class="chip onb-chip" data-v="balance">균형 있게 살펴보기</div>
+        </div>
+      </div>
+      <div class="onb-step" id="ob3">
+        <div class="onb-q">얼마나 자주<br>기록하고 싶으신가요?</div>
+        <div class="chips" id="ch3">
+          <div class="chip onb-chip" data-v="daily">매일</div>
+          <div class="chip onb-chip" data-v="weekdays">주중만</div>
+          <div class="chip onb-chip" data-v="weekend">주말에</div>
+          <div class="chip onb-chip" data-v="whenever">생각날 때마다</div>
+        </div>
+      </div>
+      <div class="onb-step" id="ob4">
+        <div class="onb-q">이름을 알려주세요</div>
+        <input class="onb-name-in" type="text" id="onb-name" placeholder="홍길동">
+      </div>
+      <div class="onb-actions">
+        <button class="onb-btn-ghost" id="onb-back" style="display:none" onclick="onbBack()">이전</button>
+        <button class="onb-btn" onclick="onbNext()">다음</button>
+      </div>
+      <button class="onb-btn-ghost" id="onb-skip" style="display:none" onclick="onbSkip()">건너뛰기</button>
+    </div>
+  </div>
+
+  <!-- ── GENERATING ─────────────────────────────────────────── -->
+  <div id="generating-screen">
+    <div class="gen-wrap">
+      <div class="gen-orb"></div>
+      <div class="gen-title">맞춤 블록을 만들고 있어요</div>
+      <div class="gen-sub">선택하신 목표를 분석해서<br>오늘부터 바로 쓸 수 있는 일기 구성을 준비하고 있어요.</div>
+      <div class="gen-items">
+        <div class="gen-item" id="gi0">
+          <div class="gen-ic" style="background:var(--accent-dim)"><i class="ti ti-mood-smile"
+              style="color:var(--accent)"></i></div>
+          <div>
+            <div class="gen-name">오늘의 기분</div>
+            <div class="gen-desc">5단계 감정 체크</div>
+          </div>
+        </div>
+        <div class="gen-item" id="gi1">
+          <div class="gen-ic" style="background:var(--warm-dim)"><i class="ti ti-checkbox"
+              style="color:var(--warm)"></i></div>
+          <div>
+            <div class="gen-name">습관 체크</div>
+            <div class="gen-desc">맞춤 습관 달성 기록</div>
+          </div>
+        </div>
+        <div class="gen-item" id="gi2">
+          <div class="gen-ic" style="background:var(--sky-dim)"><i class="ti ti-moon" style="color:var(--sky)"></i>
+          </div>
+          <div>
+            <div class="gen-name">수면 기록</div>
+            <div class="gen-desc">수면 패턴 추적</div>
+          </div>
+        </div>
+        <div class="gen-item" id="gi3">
+          <div class="gen-ic" style="background:var(--plum-dim)"><i class="ti ti-writing" style="color:var(--plum)"></i>
+          </div>
+          <div>
+            <div class="gen-name">오늘의 한 줄</div>
+            <div class="gen-desc">하루를 한 문장으로</div>
+          </div>
+        </div>
+      </div>
+      <button class="gen-done" id="gen-done" onclick="enterApp()">내 대시보드 보기</button>
+    </div>
+  </div>
+
+  <!-- ── APP ────────────────────────────────────────────────── -->
+  <div id="app" style="display:none">
+    <button class="hamburger" onclick="toggleSidebar()" id="hamburger">
+      <i class="ti ti-menu-2" id="hamburger-icon"></i>
+    </button>
+    <div class="mobile-nav-overlay" id="nav-overlay" onclick="closeSidebar()"></div>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo" onclick="goPage('home')" role="button" tabindex="0">JRNL</div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">기록</div>
+        <div class="nav-link active" onclick="goPage('home')" data-page="home"><i class="ti ti-home-2"></i> 오늘의 기록</div>
+        <div class="nav-link" onclick="goPage('explore')" data-page="explore"><i class="ti ti-calendar"></i> 탐색</div>
+        <div class="nav-section-label">분석</div>
+        <div class="nav-link" onclick="goPage('insights')" data-page="insights"><i class="ti ti-chart-line"></i> 인사이트
+        </div>
+        <div class="nav-section-label">커스터마이징</div>
+        <div class="nav-link" onclick="goPage('blocks')" data-page="blocks"><i class="ti ti-layout-grid"></i> 블록 라이브러리
+        </div>
+        <div class="nav-link" onclick="goPage('settings')" data-page="settings"><i class="ti ti-settings"></i> 설정</div>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="sidebar-user" onclick="goPage('settings')">
+          <div class="user-avatar" id="sb-avatar">나</div>
+          <div>
+            <div class="user-name" id="sb-name">사용자</div>
+            <div class="user-streak">7일 연속 기록 중</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <!-- ── TOPBAR ──────────────────────────────────────────── -->
+      <div class="topbar">
+        <div class="topbar-left">
+          <div id="topbar-date-nav" style="display:flex;align-items:center;gap:4px">
+            <button class="date-nav-btn" onclick="changeRecordingDate(-1)" title="이전 날">
+              <i class="ti ti-chevron-left"></i>
+            </button>
+            <!-- 날짜 클릭 → 달력 팝업 -->
+            <div class="topbar-date" id="tb-date" onclick="openDatePicker()" title="날짜 선택"
+              style="cursor:pointer;user-select:none;"></div>
+            <button class="date-nav-btn" id="date-nav-next" onclick="changeRecordingDate(1)" title="다음 날">
+              <i class="ti ti-chevron-right"></i>
+            </button>
+          </div>
+          <div class="topbar-page-title" id="topbar-page-title" style="display:none"></div>
+        </div>
+        <div class="topbar-right" id="topbar-home-controls">
+          <button class="topbar-btn" onclick="saveEntry()"><i class="ti ti-device-floppy"></i> 저장</button>
+          <div class="topbar-icon-btn" onclick="goPage('blocks')" title="블록 편집">
+            <i class="ti ti-layout-grid"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── DATE PICKER POPUP ──────────────────────────────── -->
+      <div id="date-picker-overlay" class="date-picker-overlay" onclick="closeDatePicker()"></div>
+      <div id="date-picker-popup" class="date-picker-popup">
+        <div class="dp-head">
+          <button class="dp-nav-btn" onclick="dpChangeMonth(-1)"><i class="ti ti-chevron-left"></i></button>
+          <span class="dp-month-lbl" id="dp-month-lbl"></span>
+          <button class="dp-nav-btn" onclick="dpChangeMonth(1)"><i class="ti ti-chevron-right"></i></button>
+        </div>
+        <div class="dp-dow">
+          <div>일</div>
+          <div>월</div>
+          <div>화</div>
+          <div>수</div>
+          <div>목</div>
+          <div>금</div>
+          <div>토</div>
+        </div>
+        <div class="dp-days" id="dp-days"></div>
+      </div>
+
+      <!-- ── HOME ───────────────────────────────────────────── -->
+      <div class="page active" id="page-home">
+        <div class="home-grid">
+          <div>
+            <div class="home-header">
+              <div class="home-greeting" id="home-greeting">오늘은 어떤 하루였나요?</div>
+              <div class="home-sub">생각과 감정을 자유롭게 남겨보세요.</div>
+            </div>
+            <div class="blocks-grid" id="blocks-grid">
+
+              <!-- 기분 -->
+              <div class="block-card" id="bc-mood">
+                <div class="block-header">
+                  <div class="block-header-left">
+                    <div class="drag-handle" title="드래그하여 순서 변경"><i class="ti ti-grip-vertical"></i></div>
+                    <div class="block-icon" style="background:var(--accent-dim)"><i class="ti ti-mood-smile"
+                        style="color:var(--accent)"></i></div>
+                    <span class="block-title">오늘의 기분</span>
+                  </div>
+                  <button class="block-menu-btn" onclick="openBlockMenu(event,'bc-mood')" title="블록 메뉴"><i
+                      class="ti ti-dots-vertical"></i></button>
+                </div>
+                <div class="mood-row">
+                  <button class="mood-opt" data-mood="1" onclick="setMood(this,1)"><i
+                      class="ti ti-mood-cry"></i></button>
+                  <button class="mood-opt" data-mood="2" onclick="setMood(this,2)"><i
+                      class="ti ti-mood-sad"></i></button>
+                  <button class="mood-opt on" data-mood="3" onclick="setMood(this,3)"><i
+                      class="ti ti-mood-empty"></i></button>
+                  <button class="mood-opt" data-mood="4" onclick="setMood(this,4)"><i
+                      class="ti ti-mood-smile"></i></button>
+                  <button class="mood-opt" data-mood="5" onclick="setMood(this,5)"><i
+                      class="ti ti-mood-happy"></i></button>
+                </div>
+              </div>
+
+              <!-- 수면 -->
+              <div class="block-card" id="bc-sleep">
+                <div class="block-header">
+                  <div class="block-header-left">
+                    <div class="drag-handle"><i class="ti ti-grip-vertical"></i></div>
+                    <div class="block-icon" style="background:var(--sky-dim)"><i class="ti ti-moon"
+                        style="color:var(--sky)"></i></div>
+                    <span class="block-title">수면</span>
+                  </div>
+                  <button class="block-menu-btn" onclick="openBlockMenu(event,'bc-sleep')"><i
+                      class="ti ti-dots-vertical"></i></button>
+                </div>
+                <div class="sleep-num"><span id="sv">7</span><span> 시간</span></div>
+                <div class="track">
+                  <div class="track-fill" id="sf" style="width:72%;background:var(--sky)"></div>
+                </div>
+                <div class="hint" id="sh">권장 수면의 88%</div>
+                <div class="adj-row">
+                  <button class="adj-btn" onclick="adjSleep(-0.5)">−</button>
+                  <button class="adj-btn" onclick="adjSleep(0.5)">＋</button>
+                </div>
+              </div>
+
+              <!-- 에너지 -->
+              <div class="block-card" id="bc-energy">
+                <div class="block-header">
+                  <div class="block-header-left">
+                    <div class="drag-handle"><i class="ti ti-grip-vertical"></i></div>
+                    <div class="block-icon" style="background:var(--gold-dim)"><i class="ti ti-bolt"
+                        style="color:var(--gold)"></i></div>
+                    <span class="block-title">에너지 레벨</span>
+                  </div>
+                  <button class="block-menu-btn" onclick="openBlockMenu(event,'bc-energy')"><i
+                      class="ti ti-dots-vertical"></i></button>
+                </div>
+                <div id="energy-scale" style="display:flex;flex-direction:column;gap:5px">
+                  <button class="energy-btn" onclick="setScale('energy',this,1)">낮음</button>
+                  <button class="energy-btn on" onclick="setScale('energy',this,2)">보통</button>
+                  <button class="energy-btn" onclick="setScale('energy',this,3)">높음</button>
+                </div>
+              </div>
+
+              <!-- 습관 -->
+              <div class="block-card wide" id="bc-habit">
+                <div class="block-header">
+                  <div class="block-header-left">
+                    <div class="drag-handle"><i class="ti ti-grip-vertical"></i></div>
+                    <div class="block-icon" style="background:var(--warm-dim)"><i class="ti ti-checkbox"
+                        style="color:var(--warm)"></i></div>
+                    <span class="block-title">습관 체크</span>
+                  </div>
+                  <button class="block-menu-btn" onclick="openBlockMenu(event,'bc-habit')"><i
+                      class="ti ti-dots-vertical"></i></button>
+                </div>
+                <div class="habit-list">
+                  <div class="habit-row"><span class="habit-label">물 2L 마시기</span>
+                    <div class="checkbox on" onclick="toggleCb(this)"></div>
+                  </div>
+                  <div class="habit-row"><span class="habit-label">30분 운동</span>
+                    <div class="checkbox" onclick="toggleCb(this)"></div>
+                  </div>
+                  <div class="habit-row"><span class="habit-label">독서 20분</span>
+                    <div class="checkbox on" onclick="toggleCb(this)"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 스트레스 -->
+              <div class="block-card" id="bc-stress">
+                <div class="block-header">
+                  <div class="block-header-left">
+                    <div class="drag-handle"><i class="ti ti-grip-vertical"></i></div>
+                    <div class="block-icon" style="background:var(--warm-dim)"><i class="ti ti-activity"
+                        style="color:var(--warm)"></i></div>
+                    <span class="block-title">스트레스</span>
+                  </div>
+                  <button class="block-menu-btn" onclick="openBlockMenu(event,'bc-stress')"><i
+                      class="ti ti-dots-vertical"></i></button>
+                </div>
+                <div class="scale" id="stress-scale">
+                  <button class="scale-btn" onclick="setScale('stress',this,1)">1</button>
+                  <button class="scale-btn" onclick="setScale('stress',this,2)">2</button>
+                  <button class="scale-btn on" onclick="setScale('stress',this,3)">3</button>
+                  <button class="scale-btn" onclick="setScale('stress',this,4)">4</button>
+                  <button class="scale-btn" onclick="setScale('stress',this,5)">5</button>
+                </div>
+                <div class="scale-label" id="stress-lbl">보통</div>
+              </div>
+
+              <!-- 수분 -->
+              <div class="block-card" id="bc-water">
+                <div class="block-header">
+                  <div class="block-header-left">
+                    <div class="drag-handle"><i class="ti ti-grip-vertical"></i></div>
+                    <div class="block-icon" style="background:var(--sky-dim)"><i class="ti ti-droplet"
+                        style="color:var(--sky)"></i></div>
+                    <span class="block-title">수분 섭취</span>
+                  </div>
+                  <button class="block-menu-btn" onclick="openBlockMenu(event,'bc-water')"><i
+                      class="ti ti-dots-vertical"></i></button>
+                </div>
+                <div class="water-cups" id="water-cups"></div>
+                <div style="font-size:12px;color:var(--ink3)" id="water-lbl">5 / 8 잔</div>
+              </div>
+
+              <!-- 날씨 -->
+              <div class="block-card" id="bc-weather">
+                <div class="block-header">
+                  <div class="block-header-left">
+                    <div class="drag-handle"><i class="ti ti-grip-vertical"></i></div>
+                    <div class="block-icon" style="background:var(--sky-dim)"><i class="ti ti-cloud"
+                        style="color:var(--sky)"></i></div>
+                    <span class="block-title">날씨</span>
+                  </div>
+                  <button class="block-menu-btn" onclick="openBlockMenu(event,'bc-weather')"><i
+                      class="ti ti-dots-vertical"></i></button>
+                </div>
+                <div class="weather-opts">
+                  <button class="weather-btn on" data-w="sunny" onclick="setWeather(this)"><i
+                      class="ti ti-sun"></i></button>
+                  <button class="weather-btn" data-w="partly" onclick="setWeather(this)"><i
+                      class="ti ti-cloud-fog"></i></button>
+                  <button class="weather-btn" data-w="rainy" onclick="setWeather(this)"><i
+                      class="ti ti-cloud-rain"></i></button>
+                  <button class="weather-btn" data-w="snowy" onclick="setWeather(this)"><i
+                      class="ti ti-snowflake"></i></button>
+                  <button class="weather-btn" data-w="foggy" onclick="setWeather(this)"><i
+                      class="ti ti-mist"></i></button>
+                </div>
+                <div class="temp-row">
+                  <input class="temp-in" type="number" id="temp-in" value="22" min="-20" max="45">
+                  <span class="temp-unit">°C</span>
+                </div>
+              </div>
+
+              <!-- 인용구 -->
+              <div class="block-card" id="bc-quote">
+                <div class="block-header">
+                  <div class="block-header-left">
+                    <div class="drag-handle"><i class="ti ti-grip-vertical"></i></div>
+                    <div class="block-icon" style="background:var(--rose-dim)"><i class="ti ti-quote"
+                        style="color:var(--rose)"></i></div>
+                    <span class="block-title">오늘의 인용구</span>
+                  </div>
+                  <button class="block-menu-btn" onclick="openBlockMenu(event,'bc-quote')"><i
+                      class="ti ti-dots-vertical"></i></button>
+                </div>
+                <div class="quote-display" id="q-text">"시작이 반이다."</div>
+                <div class="quote-src" id="q-src">— 아리스토텔레스</div>
+                <button class="quote-refresh" onclick="nextQuote()"><i class="ti ti-refresh" style="font-size:13px"></i>
+                  다른 문구</button>
+              </div>
+
+              <!-- 오늘의 한 줄 -->
+              <div class="block-card wide" id="bc-note">
+                <div class="block-header">
+                  <div class="block-header-left">
+                    <div class="drag-handle"><i class="ti ti-grip-vertical"></i></div>
+                    <div class="block-icon" style="background:var(--plum-dim)"><i class="ti ti-writing"
+                        style="color:var(--plum)"></i></div>
+                    <span class="block-title">오늘의 한 줄</span>
+                  </div>
+                  <button class="block-menu-btn" onclick="openBlockMenu(event,'bc-note')"><i
+                      class="ti ti-dots-vertical"></i></button>
+                </div>
+                <textarea class="ta" id="ta-note" placeholder="오늘 하루를 한 문장으로 표현한다면..." maxlength="140"
+                  oninput="updateCount('ta-note','cnt-note')"></textarea>
+                <div class="ta-footer"><span class="ta-count" id="cnt-note">0 / 140</span></div>
+              </div>
+
+              <!-- 감사 일기 -->
+              <div class="block-card" id="bc-gratitude">
+                <div class="block-header">
+                  <div class="block-header-left">
+                    <div class="drag-handle"><i class="ti ti-grip-vertical"></i></div>
+                    <div class="block-icon" style="background:var(--gold-dim)"><i class="ti ti-heart"
+                        style="color:var(--gold)"></i></div>
+                    <span class="block-title">감사 일기</span>
+                  </div>
+                  <button class="block-menu-btn" onclick="openBlockMenu(event,'bc-gratitude')"><i
+                      class="ti ti-dots-vertical"></i></button>
+                </div>
+                <div class="grat-fields">
+                  <div class="grat-row"><span class="grat-n">1</span><input class="grat-in" type="text"
+                      placeholder="오늘 감사한 것..."></div>
+                  <div class="grat-row"><span class="grat-n">2</span><input class="grat-in" type="text"
+                      placeholder="오늘 감사한 것..."></div>
+                  <div class="grat-row"><span class="grat-n">3</span><input class="grat-in" type="text"
+                      placeholder="오늘 감사한 것..."></div>
+                </div>
+              </div>
+
+              <!-- 운동 -->
+              <div class="block-card" id="bc-exercise">
+                <div class="block-header">
+                  <div class="block-header-left">
+                    <div class="drag-handle"><i class="ti ti-grip-vertical"></i></div>
+                    <div class="block-icon" style="background:var(--teal-dim)"><i class="ti ti-run"
+                        style="color:var(--teal)"></i></div>
+                    <span class="block-title">운동 기록</span>
+                  </div>
+                  <button class="block-menu-btn" onclick="openBlockMenu(event,'bc-exercise')"><i
+                      class="ti ti-dots-vertical"></i></button>
+                </div>
+                <div class="ex-types">
+                  <div class="ex-type" onclick="setExType(this)">달리기</div>
+                  <div class="ex-type on" onclick="setExType(this)">웨이트</div>
+                  <div class="ex-type" onclick="setExType(this)">요가</div>
+                  <div class="ex-type" onclick="setExType(this)">사이클</div>
+                  <div class="ex-type" onclick="setExType(this)">수영</div>
+                </div>
+                <div class="exercise-fields">
+                  <div class="ex-row"><span class="ex-label">시간</span><input class="ex-input" type="number"
+                      placeholder="45" value="45"><span class="ex-unit">분</span></div>
+                  <div class="ex-row"><span class="ex-label">강도</span><input class="ex-input" type="text"
+                      placeholder="중강도"></div>
+                </div>
+              </div>
+
+              <!-- 목표 -->
+              <div class="block-card wide" id="bc-goal">
+                <div class="block-header">
+                  <div class="block-header-left">
+                    <div class="drag-handle"><i class="ti ti-grip-vertical"></i></div>
+                    <div class="block-icon" style="background:var(--accent-dim)"><i class="ti ti-target"
+                        style="color:var(--accent)"></i></div>
+                    <span class="block-title">목표 달성도</span>
+                  </div>
+                  <button class="block-menu-btn" onclick="openBlockMenu(event,'bc-goal')"><i
+                      class="ti ti-dots-vertical"></i></button>
+                </div>
+                <div class="goal-list">
+                  <div class="goal-row">
+                    <div class="goal-top"><span class="goal-name">TOEIC 900점</span><span class="goal-pct">65%</span>
+                    </div>
+                    <div class="goal-bar">
+                      <div class="goal-fill" style="width:65%"></div>
+                    </div>
+                  </div>
+                  <div class="goal-row">
+                    <div class="goal-top"><span class="goal-name">마라톤 완주</span><span class="goal-pct">40%</span></div>
+                    <div class="goal-bar">
+                      <div class="goal-fill" style="width:40%"></div>
+                    </div>
+                  </div>
+                  <div class="goal-row">
+                    <div class="goal-top"><span class="goal-name">책 12권 읽기</span><span class="goal-pct">83%</span></div>
+                    <div class="goal-bar">
+                      <div class="goal-fill" style="width:83%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- LLLL 회고 -->
+              <div class="block-card wide" id="bc-4l">
+                <div class="block-header">
+                  <div class="block-header-left">
+                    <div class="drag-handle"><i class="ti ti-grip-vertical"></i></div>
+                    <div class="block-icon" style="background:var(--teal-dim)"><i class="ti ti-repeat"
+                        style="color:var(--teal)"></i></div>
+                    <span class="block-title">LLLL 회고</span>
+                  </div>
+                  <button class="block-menu-btn" onclick="openBlockMenu(event,'bc-4l')"><i
+                      class="ti ti-dots-vertical"></i></button>
+                </div>
+                <div class="fourL-grid">
+                  <div class="fourL-cell">
+                    <div class="fourL-head" style="color:var(--accent)"><i class="ti ti-heart"
+                        style="font-size:12px"></i> Liked</div>
+                    <textarea class="fourL-ta" placeholder="좋았던 것, 마음에 들었던 것..."></textarea>
+                  </div>
+                  <div class="fourL-cell">
+                    <div class="fourL-head" style="color:var(--sky)"><i class="ti ti-bulb" style="font-size:12px"></i>
+                      Learned</div>
+                    <textarea class="fourL-ta" placeholder="오늘 배운 것, 깨달은 것..."></textarea>
+                  </div>
+                  <div class="fourL-cell">
+                    <div class="fourL-head" style="color:var(--warm)"><i class="ti ti-alert-circle"
+                        style="font-size:12px"></i> Lacked</div>
+                    <textarea class="fourL-ta" placeholder="부족했던 것, 아쉬웠던 것..."></textarea>
+                  </div>
+                  <div class="fourL-cell">
+                    <div class="fourL-head" style="color:var(--plum)"><i class="ti ti-star" style="font-size:12px"></i>
+                      Longed for</div>
+                    <textarea class="fourL-ta" placeholder="바라는 것, 다음에 해보고 싶은 것..."></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- KPT 회고 -->
+              <div class="block-card wide" id="bc-kpt">
+                <div class="block-header">
+                  <div class="block-header-left">
+                    <div class="drag-handle"><i class="ti ti-grip-vertical"></i></div>
+                    <div class="block-icon" style="background:var(--sky-dim)"><i class="ti ti-refresh"
+                        style="color:var(--sky)"></i></div>
+                    <span class="block-title">KPT 회고</span>
+                  </div>
+                  <button class="block-menu-btn" onclick="openBlockMenu(event,'bc-kpt')"><i
+                      class="ti ti-dots-vertical"></i></button>
+                </div>
+                <div class="kpt-tabs">
+                  <button class="kpt-tab on" onclick="switchKpt(this,'k')">Keep</button>
+                  <button class="kpt-tab" onclick="switchKpt(this,'p')">Problem</button>
+                  <button class="kpt-tab" onclick="switchKpt(this,'t')">Try</button>
+                </div>
+                <div>
+                  <div class="kpt-panel on" id="kp-k"><textarea class="ta" placeholder="계속 유지하고 싶은 것들..."
+                      style="min-height:80px"></textarea></div>
+                  <div class="kpt-panel" id="kp-p"><textarea class="ta" placeholder="문제점, 개선이 필요한 것들..."
+                      style="min-height:80px"></textarea></div>
+                  <div class="kpt-panel" id="kp-t"><textarea class="ta" placeholder="다음에 시도해볼 것들..."
+                      style="min-height:80px"></textarea></div>
+                </div>
+              </div>
+
+              <!-- 할 일 -->
+              <div class="block-card wide" id="bc-checklist">
+                <div class="block-header">
+                  <div class="block-header-left">
+                    <div class="drag-handle"><i class="ti ti-grip-vertical"></i></div>
+                    <div class="block-icon" style="background:var(--plum-dim)"><i class="ti ti-list-check"
+                        style="color:var(--plum)"></i></div>
+                    <span class="block-title">오늘의 할 일</span>
+                  </div>
+                  <button class="block-menu-btn" onclick="openBlockMenu(event,'bc-checklist')"><i
+                      class="ti ti-dots-vertical"></i></button>
+                </div>
+                <div class="checklist-items" id="cl-items">
+                  <div class="cl-row">
+                    <div class="checkbox on" onclick="toggleCb(this)"></div><span class="cl-label">포트폴리오 업데이트</span>
+                  </div>
+                  <div class="cl-row">
+                    <div class="checkbox" onclick="toggleCb(this)"></div><span class="cl-label">19시 팀플</span>
+                  </div>
+                  <div class="cl-row">
+                    <div class="checkbox on" onclick="toggleCb(this)"></div><span class="cl-label">발표자료 수정</span>
+                  </div>
+                  <div class="cl-row">
+                    <div class="checkbox on" onclick="toggleCb(this)"></div><span class="cl-label">등록금 납부 마감</span>
+                  </div>
+                </div>
+                <button class="checklist-add" onclick="addCheckItem()"><i class="ti ti-plus"></i> 항목 추가</button>
+              </div>
+
+              <!-- 식사 -->
+              <div class="block-card wide" id="bc-meal">
+                <div class="block-header">
+                  <div class="block-header-left">
+                    <div class="drag-handle"><i class="ti ti-grip-vertical"></i></div>
+                    <div class="block-icon" style="background:var(--warm-dim)"><i class="ti ti-salad"
+                        style="color:var(--warm)"></i></div>
+                    <span class="block-title">식사 기록</span>
+                  </div>
+                  <button class="block-menu-btn" onclick="openBlockMenu(event,'bc-meal')"><i
+                      class="ti ti-dots-vertical"></i></button>
+                </div>
+                <div class="meal-grid">
+                  <div class="meal-cell">
+                    <div class="meal-head">아침</div><textarea class="meal-ta" placeholder="아침 식사..."></textarea>
+                  </div>
+                  <div class="meal-cell">
+                    <div class="meal-head">점심</div><textarea class="meal-ta" placeholder="점심 식사..."></textarea>
+                  </div>
+                  <div class="meal-cell">
+                    <div class="meal-head">저녁</div><textarea class="meal-ta" placeholder="저녁 식사..."></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 프리라이팅 -->
+              <div class="block-card full" id="bc-freewrite">
+                <div class="block-header">
+                  <div class="block-header-left">
+                    <div class="drag-handle"><i class="ti ti-grip-vertical"></i></div>
+                    <div class="block-icon" style="background:var(--gold-dim)"><i class="ti ti-pencil"
+                        style="color:var(--gold)"></i></div>
+                    <span class="block-title">프리라이팅</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <span style="font-size:12px;color:var(--ink4)">형식 없이 자유롭게</span>
+                    <button class="block-menu-btn" onclick="openBlockMenu(event,'bc-freewrite')"><i
+                        class="ti ti-dots-vertical"></i></button>
+                  </div>
+                </div>
+                <textarea class="freewrite-ta"
+                  placeholder="지금 이 순간 마음속에 있는 것들을 자유롭게 써내려 가세요. 맞춤법이나 형식은 신경 쓰지 않아도 돼요..."></textarea>
+              </div>
+
+              <!-- 사진 -->
+              <div class="block-card wide" id="bc-photo">
+                <div class="block-header">
+                  <div class="block-header-left">
+                    <div class="drag-handle"><i class="ti ti-grip-vertical"></i></div>
+                    <div class="block-icon" style="background:var(--accent-dim)"><i class="ti ti-photo"
+                        style="color:var(--accent)"></i></div>
+                    <span class="block-title">오늘의 사진</span>
+                  </div>
+                  <button class="block-menu-btn" onclick="openBlockMenu(event,'bc-photo')"><i
+                      class="ti ti-dots-vertical"></i></button>
+                </div>
+                <div class="photo-drop" id="photo-drop" onclick="document.getElementById('photo-file').click()">
+                  <i class="ti ti-camera-plus"></i><span>사진 추가하기</span>
+                </div>
+                <input type="file" id="photo-file" accept="image/*" style="display:none" onchange="handlePhoto(event)">
+              </div>
+
+            </div><!-- /blocks-grid -->
+          </div>
+
+          <!-- Right Panel -->
+          <div class="right-panel">
+            <div class="ai-strip" onclick="goPage('insights')">
+              <div class="ai-strip-icon"><i class="ti ti-sparkles"></i></div>
+              <div>
+                <div class="ai-tag">AI 인사이트</div>
+                <div class="ai-text">저장된 기록을 바탕으로 수면·기분·습관 흐름을 조심스럽게 살펴봐요</div>
+              </div>
+            </div>
+            <div class="panel-card">
+              <div class="panel-title">이번 주 요약</div>
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span
+                      style="font-size:13px;color:var(--ink2)">과제 진행도</span><span
+                      style="font-size:13px;font-weight:600;color:var(--accent)">68%</span></div>
+                  <div class="track">
+                    <div class="track-fill" style="width:73%;background:var(--accent)"></div>
+                  </div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span
+                      style="font-size:13px;color:var(--ink2)">평균 수면</span><span
+                      style="font-size:13px;font-weight:600;color:var(--sky)">6.8시간</span></div>
+                  <div class="track">
+                    <div class="track-fill" style="width:68%;background:var(--sky)"></div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:8px;padding-top:4px">
+                  <div style="flex:1;text-align:center;background:var(--bg);border-radius:8px;padding:10px">
+                    <div style="font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-1px">7</div>
+                    <div style="font-size:11px;font-weight:500;color:var(--ink3);margin-top:2px">연속 기록일</div>
+                  </div>
+                  <div style="flex:1;text-align:center;background:var(--bg);border-radius:8px;padding:10px">
+                    <div style="font-size:20px;color:#4ADE80"><i class="ti ti-mood-smile"></i></div>
+                    <div style="font-size:11px;font-weight:500;color:var(--ink3);margin-top:2px">평균 기분</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel-card">
+              <div class="panel-title">활성 블록</div>
+              <div style="font-size:13px;color:var(--ink3);line-height:1.7" id="active-block-count">현재 <strong
+                  style="color:var(--ink)">15개</strong> 블록이 활성화되어 있어요.</div>
+              <button
+                style="margin-top:12px;width:100%;padding:9px;border:1.5px solid var(--border);border-radius:8px;background:transparent;font-size:13px;font-weight:500;color:var(--ink2);cursor:pointer;transition:background .14s"
+                onclick="goPage('blocks')" onmouseover="this.style.background='var(--bg2)'"
+                onmouseout="this.style.background='transparent'">블록 편집하기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── EXPLORE ──────────────────────────────────────────── -->
+      <!-- Entry Detail Modal -->
+      <div id="entry-modal" class="entry-modal">
+        <div class="entry-modal-backdrop" onclick="closeEntryModal()"></div>
+
+        <div class="entry-modal-content">
+          <div class="entry-modal-header">
+            <h3 id="entry-modal-date"></h3>
+
+            <button class="entry-modal-close" onclick="closeEntryModal()">
+              <i class="ti ti-x"></i>
+            </button>
+          </div>
+
+          <div id="entry-modal-mood" class="entry-modal-mood"></div>
+
+          <div id="entry-modal-text" class="entry-modal-text"></div>
+
+          <div id="entry-modal-tags" class="entry-modal-tags"></div>
+        </div>
+      </div>
+
+      <div class="page" id="page-explore">
+
+        <div class="page-title">탐색</div>
+        <div class="page-sub">기록을 돌아보세요</div>
+
+        <div class="explore-toolbar">
+
+          <div class="search-input-wrap">
+            <i class="ti ti-search search-icon"></i>
+            <input type="text" id="explore-search" class="search-input" placeholder="기록 내용, 태그 검색..."
+              oninput="filterEntries()">
+          </div>
+
+          <div class="explore-filters">
+
+            <button class="filter-btn active" onclick="showToast('아직 준비 중인 기능입니다.')">
+              전체
+            </button>
+
+            <button class="filter-btn" onclick="showToast('아직 준비 중인 기능입니다.')">
+              사진
+            </button>
+
+            <button class="filter-btn" onclick="showToast('아직 준비 중인 기능입니다.')">
+              운동
+            </button>
+
+            <button class="filter-btn" onclick="showToast('아직 준비 중인 기능입니다.')">
+              회고
+            </button>
+
+            <button class="filter-btn" onclick="showToast('아직 준비 중인 기능입니다.')">
+              감사일기
+            </button>
+
+            <button class="filter-btn" onclick="showToast('아직 준비 중인 기능입니다.')">
+              프리라이팅
+            </button>
+
+            <div class="filter-group">
+
+              <button id="advanced-filter-btn" class="filter-btn" onclick="toggleAdvancedFilter()">
+                <i class="ti ti-filter"></i>
+                필터
+              </button>
+
+              <div id="advanced-filter-panel" class="advanced-filter-panel">
+
+                <div class="af-header">
+                  고급 필터
+                </div>
+
+                <div class="af-group">
+                  <div class="af-title">기분</div>
+
+                  <label class="af-check">
+                    <input type="checkbox" id="filter-good-mood">
+                    <span>좋았던 날 (4~5)</span>
+                  </label>
+
+                  <label class="af-check">
+                    <input type="checkbox" id="filter-bad-mood">
+                    <span>힘들었던 날 (1~2)</span>
+                  </label>
+                </div>
+
+                <div class="af-group">
+                  <div class="af-title">수면</div>
+
+                  <label class="af-check">
+                    <input type="checkbox" id="filter-sleep-low">
+                    <span>6시간 이하</span>
+                  </label>
+
+                  <label class="af-check">
+                    <input type="checkbox" id="filter-sleep-high">
+                    <span>8시간 이상</span>
+                  </label>
+                </div>
+
+                <div class="af-actions">
+                  <button class="af-btn" onclick="applyAdvancedFilter()">
+                    적용
+                  </button>
+
+                  <button class="af-btn secondary" onclick="resetAdvancedFilter()">
+                    초기화
+                  </button>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- 달력 + 기록 목록 -->
+        <div class="explore-layout">
+
+          <div class="cal-wrap">
+
+            <div class="cal-head">
+              <div class="cal-month-lbl" id="cal-m"></div>
+
+              <div class="cal-nav">
+                <button class="cal-btn" onclick="chMonth(-1)">
+                  <i class="ti ti-chevron-left"></i>
+                </button>
+
+                <button class="cal-btn" onclick="chMonth(1)">
+                  <i class="ti ti-chevron-right"></i>
+                </button>
+              </div>
+
+            </div>
+
+            <div class="cal-dow">
+              <div class="cal-dow-label">일</div>
+              <div class="cal-dow-label">월</div>
+              <div class="cal-dow-label">화</div>
+              <div class="cal-dow-label">수</div>
+              <div class="cal-dow-label">목</div>
+              <div class="cal-dow-label">금</div>
+              <div class="cal-dow-label">토</div>
+            </div>
+
+            <div class="cal-days" id="cal-days"></div>
+
+          </div>
+
+          <div class="explore-content">
+
+            <div class="t-label" style="margin-bottom:12px;">
+              최근 기록
+            </div>
+
+            <div class="entry-list" id="entry-list"></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ── INSIGHTS ─────────────────────────────────────────── -->
+      <div class="page" id="page-insights">
+        <div class="page-title">인사이트</div>
+        <div class="page-sub" id="insight-period-sub">지난 7일간의 기록을 분석했어요</div>
+
+        <div class="period-selector">
+          <button class="period-btn active" data-period="7" onclick="setPeriod(7,this)">7일</button>
+          <button class="period-btn" data-period="30" onclick="setPeriod(30,this)">30일</button>
+          <button class="period-btn" data-period="90" onclick="setPeriod(90,this)">3개월</button>
+          <button class="period-btn" data-period="180" onclick="setPeriod(180,this)">6개월</button>
+          <button class="period-btn" data-period="0" onclick="setPeriod(0,this)">전체</button>
+        </div>
+
+        <div class="insights-layout">
+          <div class="stat-card">
+            <div class="stat-big" id="stat-streak">7</div>
+            <div class="stat-label">연속 기록일</div>
+            <div class="stat-change">저장된 최근 기록 기준</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-big"><span id="stat-habit">73</span><span class="stat-unit">%</span></div>
+            <div class="stat-label">습관 달성률</div>
+            <div class="stat-change">오늘 저장 시 즉시 반영</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-big" id="stat-sleep">6.8</div>
+            <div class="stat-label">평균 수면 (시간)</div>
+            <div class="stat-change" id="stat-mood-change">평균 기분 3.8/5 · 스트레스 3/5</div>
+          </div>
+          <div class="ins-card">
+            <div class="ins-card-title"><i class="ti ti-mood-smile" style="color:var(--accent)"></i> 이번 주 기분</div>
+            <div class="mood-week" id="mood-week"></div>
+          </div>
+          <div class="ins-card span2">
+            <div class="ins-card-title"><i class="ti ti-moon" style="color:var(--sky)"></i> 수면 시간 추이</div>
+            <div class="line-chart" id="sleep-line-chart"></div>
+          </div>
+          <div class="ins-card span2">
+            <div class="ins-card-title"><i class="ti ti-mood-smile" style="color:var(--accent)"></i> 기분 요약</div>
+            <div class="metric-summary" id="mood-summary"></div>
+          </div>
+          <div class="ins-card">
+            <div class="ins-card-title"><i class="ti ti-checkbox" style="color:var(--teal)"></i> 습관 달성률</div>
+            <div class="habit-prog" id="habit-prog"></div>
+          </div>
+          <div class="ins-card">
+            <div class="ins-card-title"><i class="ti ti-activity" style="color:var(--warm)"></i> 스트레스 수준</div>
+            <div class="donut-wrap" id="stress-donut"></div>
+          </div>
+
+          <div class="ins-card span3 ai-panel">
+            <div class="ins-card-head">
+              <div class="ins-card-title"><i class="ti ti-sparkles" style="color:var(--accent)"></i> AI 주간 분석</div>
+              <div class="ai-badge"><i class="ti ti-shield-lock"></i> 로컬 기록 기반 · 사용자가 수정 가능</div>
+            </div>
+            <div class="ai-summary" id="ai-insight-body"></div>
+            <div class="ai-actions">
+              <button onclick="editAiInsight()"><i class="ti ti-pencil"></i> 수정</button>
+              <button onclick="regenerateAiInsight()"><i class="ti ti-refresh"></i> 다시 생성</button>
+              <button class="danger" onclick="deleteAiInsight()"><i class="ti ti-trash"></i> 삭제</button>
+            </div>
+          </div>
+
+          <div class="ins-card span3 policy-panel">
+            <div class="ins-card-title"><i class="ti ti-shield-lock" style="color:var(--teal)"></i> 인사이트 운영 원칙</div>
+            <div class="ai-policy-list">
+              <div><strong>개인정보 보호</strong><span>기록은 동의 없이 공유되지 않아요. 언제든 수정하거나 삭제할 수 있어요.</span></div>
+              <div><strong>함께 살펴보기</strong><span>단정적인 결론보다 기록 속 패턴을 함께 발견하고 새로운 관점을 제안해요.</span></div>
+              <div><strong>함께 만들어가기</strong><span>기록이 쌓일수록 더 잘 맞는 인사이트를 제공해요. 피드백으로 개선할 수 있어요.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── BLOCKS LIBRARY ───────────────────────────────────── -->
+      <div class="page" id="page-blocks">
+        <!-- 뒤로가기 버튼 -->
+        <div class="blocks-back-bar">
+          <button class="blocks-back-btn" onclick="goPage('home')">
+            <i class="ti ti-arrow-left"></i> 저장하고 돌아가기
+          </button>
+        </div>
+        <div class="page-title">블록 라이브러리</div>
+        <div class="page-sub">원하는 블록을 켜고 끄면 홈 화면에 즉시 반영돼요.</div>
+        <div class="settings-layout-single">
+
+          <!-- 일상 트래킹 -->
+          <div class="settings-card">
+            <div class="settings-title">일상 트래킹</div>
+            <div class="block-library">
+              <div class="lib-row">
+                <div class="lib-left">
+                  <div class="lib-icon" style="background:var(--accent-dim)"><i class="ti ti-mood-smile"
+                      style="color:var(--accent)"></i></div>
+                  <div class="lib-name">오늘의 기분</div>
+                </div>
+                <div class="lib-right">
+                  <button class="lib-info-btn" onclick="showBlockInfo('bc-mood',event)"><i
+                      class="ti ti-info-circle"></i></button>
+                  <div class="toggle on" id="lib-toggle-bc-mood" onclick="toggleBlock('bc-mood',this)"></div>
+                </div>
+              </div>
+              <div class="lib-row">
+                <div class="lib-left">
+                  <div class="lib-icon" style="background:var(--sky-dim)"><i class="ti ti-moon"
+                      style="color:var(--sky)"></i></div>
+                  <div class="lib-name">수면 기록</div>
+                </div>
+                <div class="lib-right">
+                  <button class="lib-info-btn" onclick="showBlockInfo('bc-sleep',event)"><i
+                      class="ti ti-info-circle"></i></button>
+                  <div class="toggle on" id="lib-toggle-bc-sleep" onclick="toggleBlock('bc-sleep',this)"></div>
+                </div>
+              </div>
+              <div class="lib-row">
+                <div class="lib-left">
+                  <div class="lib-icon" style="background:var(--gold-dim)"><i class="ti ti-bolt"
+                      style="color:var(--gold)"></i></div>
+                  <div class="lib-name">에너지 레벨</div>
+                </div>
+                <div class="lib-right">
+                  <button class="lib-info-btn" onclick="showBlockInfo('bc-energy',event)"><i
+                      class="ti ti-info-circle"></i></button>
+                  <div class="toggle on" id="lib-toggle-bc-energy" onclick="toggleBlock('bc-energy',this)"></div>
+                </div>
+              </div>
+              <div class="lib-row">
+                <div class="lib-left">
+                  <div class="lib-icon" style="background:var(--warm-dim)"><i class="ti ti-checkbox"
+                      style="color:var(--warm)"></i></div>
+                  <div class="lib-name">습관 체크</div>
+                </div>
+                <div class="lib-right">
+                  <button class="lib-info-btn" onclick="showBlockInfo('bc-habit',event)"><i
+                      class="ti ti-info-circle"></i></button>
+                  <div class="toggle on" id="lib-toggle-bc-habit" onclick="toggleBlock('bc-habit',this)"></div>
+                </div>
+              </div>
+              <div class="lib-row">
+                <div class="lib-left">
+                  <div class="lib-icon" style="background:var(--warm-dim)"><i class="ti ti-activity"
+                      style="color:var(--warm)"></i></div>
+                  <div class="lib-name">스트레스 지수</div>
+                </div>
+                <div class="lib-right">
+                  <button class="lib-info-btn" onclick="showBlockInfo('bc-stress',event)"><i
+                      class="ti ti-info-circle"></i></button>
+                  <div class="toggle on" id="lib-toggle-bc-stress" onclick="toggleBlock('bc-stress',this)"></div>
+                </div>
+              </div>
+              <div class="lib-row">
+                <div class="lib-left">
+                  <div class="lib-icon" style="background:var(--sky-dim)"><i class="ti ti-droplet"
+                      style="color:var(--sky)"></i></div>
+                  <div class="lib-name">수분 섭취</div>
+                </div>
+                <div class="lib-right">
+                  <button class="lib-info-btn" onclick="showBlockInfo('bc-water',event)"><i
+                      class="ti ti-info-circle"></i></button>
+                  <div class="toggle on" id="lib-toggle-bc-water" onclick="toggleBlock('bc-water',this)"></div>
+                </div>
+              </div>
+              <div class="lib-row">
+                <div class="lib-left">
+                  <div class="lib-icon" style="background:var(--sky-dim)"><i class="ti ti-cloud"
+                      style="color:var(--sky)"></i></div>
+                  <div class="lib-name">날씨</div>
+                </div>
+                <div class="lib-right">
+                  <button class="lib-info-btn" onclick="showBlockInfo('bc-weather',event)"><i
+                      class="ti ti-info-circle"></i></button>
+                  <div class="toggle on" id="lib-toggle-bc-weather" onclick="toggleBlock('bc-weather',this)"></div>
+                </div>
+              </div>
+              <div class="lib-row">
+                <div class="lib-left">
+                  <div class="lib-icon" style="background:var(--rose-dim)"><i class="ti ti-quote"
+                      style="color:var(--rose)"></i></div>
+                  <div class="lib-name">오늘의 인용구</div>
+                </div>
+                <div class="lib-right">
+                  <button class="lib-info-btn" onclick="showBlockInfo('bc-quote',event)"><i
+                      class="ti ti-info-circle"></i></button>
+                  <div class="toggle on" id="lib-toggle-bc-quote" onclick="toggleBlock('bc-quote',this)"></div>
+                </div>
+              </div>
+              <div class="lib-row">
+                <div class="lib-left">
+                  <div class="lib-icon" style="background:var(--plum-dim)"><i class="ti ti-writing"
+                      style="color:var(--plum)"></i></div>
+                  <div class="lib-name">오늘의 한 줄</div>
+                </div>
+                <div class="lib-right">
+                  <button class="lib-info-btn" onclick="showBlockInfo('bc-note',event)"><i
+                      class="ti ti-info-circle"></i></button>
+                  <div class="toggle on" id="lib-toggle-bc-note" onclick="toggleBlock('bc-note',this)"></div>
+                </div>
+              </div>
+              <div class="lib-row">
+                <div class="lib-left">
+                  <div class="lib-icon" style="background:var(--gold-dim)"><i class="ti ti-heart"
+                      style="color:var(--gold)"></i></div>
+                  <div class="lib-name">감사 일기</div>
+                </div>
+                <div class="lib-right">
+                  <button class="lib-info-btn" onclick="showBlockInfo('bc-gratitude',event)"><i
+                      class="ti ti-info-circle"></i></button>
+                  <div class="toggle on" id="lib-toggle-bc-gratitude" onclick="toggleBlock('bc-gratitude',this)"></div>
+                </div>
+              </div>
+              <div class="lib-row">
+                <div class="lib-left">
+                  <div class="lib-icon" style="background:var(--gold-dim)"><i class="ti ti-pencil"
+                      style="color:var(--gold)"></i></div>
+                  <div class="lib-name">프리라이팅</div>
+                </div>
+                <div class="lib-right">
+                  <button class="lib-info-btn" onclick="showBlockInfo('bc-freewrite',event)"><i
+                      class="ti ti-info-circle"></i></button>
+                  <div class="toggle on" id="lib-toggle-bc-freewrite" onclick="toggleBlock('bc-freewrite',this)"></div>
+                </div>
+              </div>
+              <div class="lib-row">
+                <div class="lib-left">
+                  <div class="lib-icon" style="background:var(--plum-dim)"><i class="ti ti-list-check"
+                      style="color:var(--plum)"></i></div>
+                  <div class="lib-name">오늘의 할 일</div>
+                </div>
+                <div class="lib-right">
+                  <button class="lib-info-btn" onclick="showBlockInfo('bc-checklist',event)"><i
+                      class="ti ti-info-circle"></i></button>
+                  <div class="toggle on" id="lib-toggle-bc-checklist" onclick="toggleBlock('bc-checklist',this)"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 회고 & 성찰 -->
+          <div class="settings-card">
+            <div class="settings-title">회고 &amp; 성찰</div>
+            <div class="block-library">
+              <div class="lib-row">
+                <div class="lib-left">
+                  <div class="lib-icon" style="background:var(--teal-dim)"><i class="ti ti-repeat"
+                      style="color:var(--teal)"></i></div>
+                  <div class="lib-name">LLLL 회고</div>
+                </div>
+                <div class="lib-right">
+                  <button class="lib-info-btn" onclick="showBlockInfo('bc-4l',event)"><i
+                      class="ti ti-info-circle"></i></button>
+                  <div class="toggle on" id="lib-toggle-bc-4l" onclick="toggleBlock('bc-4l',this)"></div>
+                </div>
+              </div>
+              <div class="lib-row">
+                <div class="lib-left">
+                  <div class="lib-icon" style="background:var(--sky-dim)"><i class="ti ti-refresh"
+                      style="color:var(--sky)"></i></div>
+                  <div class="lib-name">KPT 회고</div>
+                </div>
+                <div class="lib-right">
+                  <button class="lib-info-btn" onclick="showBlockInfo('bc-kpt',event)"><i
+                      class="ti ti-info-circle"></i></button>
+                  <div class="toggle on" id="lib-toggle-bc-kpt" onclick="toggleBlock('bc-kpt',this)"></div>
+                </div>
+              </div>
+              <div class="lib-row">
+                <div class="lib-left">
+                  <div class="lib-icon" style="background:var(--accent-dim)"><i class="ti ti-target"
+                      style="color:var(--accent)"></i></div>
+                  <div class="lib-name">목표 달성도</div>
+                </div>
+                <div class="lib-right">
+                  <button class="lib-info-btn" onclick="showBlockInfo('bc-goal',event)"><i
+                      class="ti ti-info-circle"></i></button>
+                  <div class="toggle on" id="lib-toggle-bc-goal" onclick="toggleBlock('bc-goal',this)"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 건강 & 라이프스타일 -->
+          <div class="settings-card">
+            <div class="settings-title">건강 &amp; 라이프스타일</div>
+            <div class="block-library">
+              <div class="lib-row">
+                <div class="lib-left">
+                  <div class="lib-icon" style="background:var(--teal-dim)"><i class="ti ti-run"
+                      style="color:var(--teal)"></i></div>
+                  <div class="lib-name">운동 기록</div>
+                </div>
+                <div class="lib-right">
+                  <button class="lib-info-btn" onclick="showBlockInfo('bc-exercise',event)"><i
+                      class="ti ti-info-circle"></i></button>
+                  <div class="toggle on" id="lib-toggle-bc-exercise" onclick="toggleBlock('bc-exercise',this)"></div>
+                </div>
+              </div>
+              <div class="lib-row">
+                <div class="lib-left">
+                  <div class="lib-icon" style="background:var(--warm-dim)"><i class="ti ti-salad"
+                      style="color:var(--warm)"></i></div>
+                  <div class="lib-name">식사 기록</div>
+                </div>
+                <div class="lib-right">
+                  <button class="lib-info-btn" onclick="showBlockInfo('bc-meal',event)"><i
+                      class="ti ti-info-circle"></i></button>
+                  <div class="toggle on" id="lib-toggle-bc-meal" onclick="toggleBlock('bc-meal',this)"></div>
+                </div>
+              </div>
+              <div class="lib-row">
+                <div class="lib-left">
+                  <div class="lib-icon" style="background:var(--accent-dim)"><i class="ti ti-photo"
+                      style="color:var(--accent)"></i></div>
+                  <div class="lib-name">오늘의 사진</div>
+                </div>
+                <div class="lib-right">
+                  <button class="lib-info-btn" onclick="showBlockInfo('bc-photo',event)"><i
+                      class="ti ti-info-circle"></i></button>
+                  <div class="toggle on" id="lib-toggle-bc-photo" onclick="toggleBlock('bc-photo',this)"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── SETTINGS ─────────────────────────────────────────── -->
+      <div class="page" id="page-settings">
+        <div class="page-title">설정</div>
+        <div class="page-sub" style="margin-bottom:24px"></div>
+        <div class="settings-layout">
+          <div>
+            <!-- 프로필 -->
+            <div class="settings-card">
+              <div class="profile-row">
+                <div class="profile-avatar" id="set-avatar">나</div>
+                <div>
+                  <div class="profile-name" id="set-name">사용자</div>
+                  <div class="profile-sub">7일 연속 기록 중</div>
+                </div>
+              </div>
+              <div class="settings-title">계정</div>
+              <div class="settings-rows">
+                <div class="settings-row">
+                  <div class="settings-row-left">
+                    <div class="settings-row-icon" style="background:var(--accent-dim)"><i class="ti ti-user"
+                        style="color:var(--accent)"></i></div>
+                    <span class="settings-row-label">이름 변경</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <span class="settings-row-val" id="set-name-val">사용자</span>
+                    <i class="ti ti-chevron-right" style="color:var(--ink4)"></i>
+                  </div>
+                </div>
+                <div class="settings-row">
+                  <div class="settings-row-left">
+                    <div class="settings-row-icon" style="background:var(--warm-dim)"><i class="ti ti-bell"
+                        style="color:var(--warm)"></i></div>
+                    <span class="settings-row-label">알림 설정</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <span class="settings-row-val">오후 10:00</span>
+                    <i class="ti ti-chevron-right" style="color:var(--ink4)"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 개인정보 및 동의 -->
+            <div class="settings-card">
+              <div class="settings-title">개인정보 및 동의</div>
+              <div class="settings-rows">
+                <div class="settings-row" style="cursor:default">
+                  <div class="settings-row-left">
+                    <div class="settings-row-icon" style="background:var(--teal-dim)"><i class="ti ti-database"
+                        style="color:var(--teal)"></i></div>
+                    <div>
+                      <div class="settings-row-label">데이터 수집 동의</div>
+                      <div class="settings-row-sub">앱 개선을 위한 익명 사용 통계 수집</div>
+                    </div>
+                  </div>
+                  <div class="toggle" id="consent-data-toggle" onclick="toggleConsent('data',this)"></div>
+                </div>
+                <div class="settings-row" style="cursor:default">
+                  <div class="settings-row-left">
+                    <div class="settings-row-icon" style="background:var(--sky-dim)"><i class="ti ti-map-pin"
+                        style="color:var(--sky)"></i></div>
+                    <div>
+                      <div class="settings-row-label">위치 서비스 동의</div>
+                      <div class="settings-row-sub">날씨 블록 자동 정보 수집에 사용</div>
+                    </div>
+                  </div>
+                  <div class="toggle" id="consent-location-toggle" onclick="toggleConsent('location',this)"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 데이터 -->
+            <div class="settings-card">
+              <div class="settings-title">데이터</div>
+              <div class="settings-rows">
+                <div class="settings-row">
+                  <div class="settings-row-left">
+                    <div class="settings-row-icon" style="background:var(--sky-dim)"><i class="ti ti-download"
+                        style="color:var(--sky)"></i></div>
+                    <span class="settings-row-label">데이터 내보내기</span>
+                  </div>
+                  <i class="ti ti-chevron-right" style="color:var(--ink4)"></i>
+                </div>
+                <div class="settings-row" onclick="resetApp()">
+                  <div class="settings-row-left">
+                    <div class="settings-row-icon" style="background:#FEE2E2"><i class="ti ti-trash"
+                        style="color:#DC2626"></i></div>
+                    <span class="settings-row-label" style="color:#DC2626">모든 기록 삭제하기</span>
+                  </div>
+                  <i class="ti ti-chevron-right" style="color:var(--ink4)"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- 개인화 -->
+            <div class="settings-card">
+              <div class="settings-title">개인화 설정</div>
+              <div class="settings-rows">
+                <div class="settings-row" onclick="openAISettings()">
+                  <div class="settings-row-left">
+                    <div class="settings-row-icon" style="background:var(--accent-dim)"><i class="ti ti-sparkles"
+                        style="color:var(--accent)"></i></div>
+                    <span class="settings-row-label">AI 인사이트 설정</span>
+                  </div>
+                  <i class="ti ti-chevron-right" style="color:var(--ink4)"></i>
+                </div>
+                <div class="settings-row" onclick="openBlockSettings()">
+                  <div class="settings-row-left">
+                    <div class="settings-row-icon" style="background:var(--teal-dim)"><i class="ti ti-user-cog"
+                        style="color:var(--teal)"></i></div>
+                    <span class="settings-row-label">블록 개인화 설정</span>
+                  </div>
+                  <i class="ti ti-chevron-right" style="color:var(--ink4)"></i>
+                </div>
+                <div class="settings-row" onclick="reOnboard()">
+                  <div class="settings-row-left">
+                    <div class="settings-row-icon" style="background:var(--plum-dim)"><i class="ti ti-rotate"
+                        style="color:var(--plum)"></i></div>
+                    <span class="settings-row-label">온보딩 다시 보기</span>
+                  </div>
+                  <i class="ti ti-chevron-right" style="color:var(--ink4)"></i>
+                </div>
+              </div>
+            </div>
+
+            <div style="text-align:center;padding:8px 0 32px;font-size:12px;color:var(--ink4)">JRNL v1.2</div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ── TOAST ──────────────────────────────────────────────── -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ── BLOCK INFO POPUP ────────────────────────────────────── -->
+  <div class="block-info-popup" id="block-info-popup">
+    <div class="bip-name"></div>
+    <div class="bip-desc"></div>
+  </div>
+
+  <!-- ── BLOCK CONTEXT MENU ─────────────────────────────────── -->
+  <div class="block-ctx-menu" id="block-ctx-menu">
+    <button class="ctx-item ctx-danger" onclick="ctxRemoveBlock()">
+      <i class="ti ti-eye-off"></i> <span>홈 화면에서 제거</span>
+    </button>
+  </div>
+
+  <!-- ── MODAL: Remove Block Confirm ───────────────────────── -->
+  <div class="modal-overlay" id="remove-block-modal">
+    <div class="modal-card" style="max-width:360px">
+      <div class="modal-head">
+        <h3>블록 제거</h3>
+        <button onclick="closeRemoveBlockModal()"><i class="ti ti-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">이 블록을 홈 화면에서 제거할까요?<br><span style="font-size:12px;color:var(--ink4)">데이터는 삭제되지 않으며, 블록
+            라이브러리에서 다시 활성화할 수 있어요.</span></p>
+        <div class="modal-actions">
+          <button class="modal-cancel" onclick="closeRemoveBlockModal()">취소</button>
+          <button class="modal-danger" onclick="confirmRemoveBlock()">제거</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+
+  <!-- ── MODAL: Reset ────────────────────────────────────────── -->
+  <div class="modal-overlay" id="reset-modal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3>모든 기록 삭제하기</h3>
+        <button onclick="closeResetModal()"><i class="ti ti-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">저장된 기록과 설정이 모두 삭제돼요. 이 작업은 되돌릴 수 없어요.</p>
+        <div class="modal-actions">
+          <button class="modal-cancel" onclick="closeResetModal()">취소</button>
+          <button class="modal-danger" onclick="confirmReset()">삭제하기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MODAL: AI Settings ──────────────────────────────────── -->
+  <div class="modal-overlay" id="ai-settings-modal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3>AI 인사이트 설정</h3>
+        <button onclick="closeAISettings()"><i class="ti ti-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">기록을 함께 살펴볼 때 참고할 기준을 설정할 수 있어요.</p>
+        <div class="ai-setting-group">
+          <h4>관심 있게 보고 싶은 주제</h4>
+          <div class="chips">
+            <div class="chip">감정</div>
+            <div class="chip">습관</div>
+            <div class="chip">생산성</div>
+            <div class="chip">건강</div>
+            <div class="chip">관계</div>
+            <div class="chip">창작</div>
+            <div class="chip">학습</div>
+          </div>
+        </div>
+        <div class="ai-setting-group">
+          <h4>어떤 방식의 인사이트를 원하나요?</h4>
+          <div class="ai-option insight-style">기록 속 패턴을 발견하고 싶어요</div>
+          <div class="ai-option insight-style">생각해볼 질문을 받고 싶어요</div>
+          <div class="ai-option insight-style">목표와 습관을 점검하고 싶어요</div>
+          <div class="ai-option insight-style">균형 있게 살펴보고 싶어요</div>
+        </div>
+        <div class="ai-setting-group">
+          <h4>어떤 톤으로 이야기해주면 좋을까요?</h4>
+          <div class="ai-option insight-tone">차분하고 객관적으로</div>
+          <div class="ai-option insight-tone">따뜻하고 공감적으로</div>
+          <div class="ai-option insight-tone">간결하게 핵심만</div>
+          <div class="ai-option insight-tone">코치처럼 동기부여하며</div>
+        </div>
+        <div class="modal-actions">
+          <button class="modal-save" onclick="saveAISettings()">저장하기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MODAL: Block Settings ───────────────────────────────── -->
+  <div class="modal-overlay" id="block-settings-modal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3>블록 개인화 설정</h3>
+        <button onclick="closeBlockSettings()"><i class="ti ti-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">기록 방식을 이해하고 점차 개인화할 수 있도록 몇 가지를 알려주세요.</p>
+        <div class="ai-setting-group">
+          <h4>어떤 기록을 더 남기고 싶나요?</h4>
+          <div class="chips">
+            <div class="chip">감정</div>
+            <div class="chip">건강</div>
+            <div class="chip">습관</div>
+            <div class="chip">생산성</div>
+            <div class="chip">관계</div>
+            <div class="chip">창작</div>
+            <div class="chip">학습</div>
+          </div>
+        </div>
+        <div class="ai-setting-group">
+          <h4>현재 가장 중요하게 생각하는 목표는 무엇인가요?</h4>
+          <div class="ai-option block-goal">나를 돌아보기</div>
+          <div class="ai-option block-goal">건강 관리</div>
+          <div class="ai-option block-goal">목표 달성</div>
+          <div class="ai-option block-goal">스트레스 관리</div>
+          <div class="ai-option block-goal">일상 기록</div>
+          <div class="ai-option block-goal">자기계발</div>
+        </div>
+        <div class="ai-setting-group">
+          <h4>어떤 방식으로 기록하는 것을 선호하나요?</h4>
+          <div class="ai-option record-style">자유롭게 글 쓰기</div>
+          <div class="ai-option record-style">짧게 체크하기</div>
+          <div class="ai-option record-style">질문에 답하기</div>
+          <div class="ai-option record-style">숫자로 기록하기</div>
+        </div>
+        <div class="modal-actions">
+          <button class="modal-save" onclick="saveBlockSettings()">저장하기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
